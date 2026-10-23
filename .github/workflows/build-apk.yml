@@ -19,15 +19,13 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    # ЭТОТ ШАГ ПЕРЕСОЗДАСТ ПРАВИЛЬНЫЙ gradle-wrapper.jar
-    - name: Generate Gradle Wrapper
-      run: gradle wrapper --gradle-version 8.2
+    # Устанавливаем системный Gradle (он не требует файла gradlew)
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
 
-    - name: Make gradlew executable
-      run: chmod +x ./gradlew
-
+    # Собираем проект системным Gradle, а не через ./gradlew
     - name: Build with Gradle
-      run: ./gradlew assembleDebug
+      run: gradle assembleDebug
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
